@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<common:RootNavigatorView xmlns:fx="http://ns.adobe.com/mxml/2009" 
+						  xmlns:s="library://ns.adobe.com/flex/spark" xmlns:common="views.common.*">
+	<fx:Script>
+		<![CDATA[
+			[Bindable]
+			private var minimum:Number = 0;
+			[Bindable]
+			private var maximum:Number = 10;
+		]]>
+	</fx:Script>
+	<common:layout>
+		<s:VerticalLayout horizontalAlign="center" paddingTop="20" />
+	</common:layout>
+	<s:HGroup width="100%">
+		<s:Label text="Min : {minimum}" />
+		<s:Spacer width="100%" />
+		<s:Label text="Pos : {slider.value}" />
+		<s:Spacer width="100%" />
+		<s:Label text="Max : {maximum}" />
+	</s:HGroup>
+	
+	<s:HSlider id="slider" minimum="0" maximum="10" />
+	<s:Button label="Hide/Show Slider" id="btnHideShow" click="slider.visible = !slider.visible" />
+	<s:Button label="0/5/10" click="slider.minimum=minimum=0;slider.value=5;slider.maximum=maximum=10" />
+	<s:Button label="-5/75/105" click="slider.minimum=minimum=-5;slider.value=75;slider.maximum=maximum=105" />
+</common:RootNavigatorView>

@@ -1,7 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
 <s:View xmlns:fx="http://ns.adobe.com/mxml/2009" 
 		xmlns:s="library://ns.adobe.com/flex/spark" title="Controls" actionBarVisible="true">
-	<s:VGroup x="0" y="0" width="100%" height="100%" verticalAlign="middle" horizontalAlign="center">
-		<s:Label text="Comming Soon" />
-	</s:VGroup>
+	<fx:Script>
+		<![CDATA[
+			import mx.collections.ArrayCollection;
+			
+			import views.controls.ActivyIndicatorView;
+			import views.controls.ButtonView;
+			import views.controls.LabelView;
+			import views.controls.PickerView;
+			import views.controls.ProgressBarView;
+			import views.controls.SearchBarView;
+			import views.controls.SliderView;
+			import views.controls.SwitchView;
+			import views.controls.TextAreaView;
+			import views.controls.TextFieldView;
+			
+			[Bindable]
+			private var _datas:ArrayCollection = new ArrayCollection([
+				{label:"Slider", url:SliderView, hasChild:true},
+				{label:"Switch", url:SwitchView, hasChild:true},
+				{label:"Activity Indicator", url:ActivyIndicatorView, hasChild:true},
+				{label:"Progress Bar", url:ProgressBarView, hasChild:true},
+				{label:"Button", url:ButtonView, hasChild:true},
+				{label:"Label", url:LabelView, hasChild:true},
+				{label:"Search Bar", url:SearchBarView, hasChild:true},
+				{label:"Text Field", url:TextFieldView, hasChild:true},
+				{label:"Text Area", url:TextAreaView, hasChild:true},
+				{label:"Picker", url:PickerView, hasChild:true}
+			]);		
+			
+			protected function lstControls_clickHandler(event:MouseEvent):void
+			{
+				if(lstControls.selectedItem != null && lstControls.selectedItem.hasChild) {
+					navigator.pushView(lstControls.selectedItem.url, lstControls.selectedItem);
+				}
+			}
+			
+		]]>
+	</fx:Script>
+	<s:List dataProvider="{_datas}" width="100%" height="100%" id="lstControls" 
+		click="lstControls_clickHandler(event)"/>
 </s:View>
