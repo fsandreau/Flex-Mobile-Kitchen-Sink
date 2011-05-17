@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:View xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		xmlns:s="library://ns.adobe.com/flex/spark" title="Mashups" actionBarVisible="true">
+	<fx:Script>
+		<![CDATA[
+			import mx.collections.ArrayCollection;
+			
+			import spark.components.IconItemRenderer;
+			
+			import views.mashups.FacebookView;
+			import views.mashups.SoapView;
+			import views.mashups.TwitterView;
+			[Bindable]
+			private var _datas:ArrayCollection = new ArrayCollection([
+				{label:"Twitter", url:TwitterView, hasChild:true, icon:'assets/images/twitter.png'},
+				{label:"Facebook", url:FacebookView, hasChild:true, icon:'assets/images/facebook.png'},
+				{label:"SOAP", url:SoapView, hasChild:true, icon:'assets/images/xml_soap.png'}
+			]);
+			
+			protected function mashLst_clickHandler(event:MouseEvent):void
+			{
+				if(mashLst.selectedItem != null && mashLst.selectedItem.hasChild) {
+					navigator.pushView(mashLst.selectedItem.url, mashLst.selectedItem);
+				}
+			}
+			
+		]]>
+	</fx:Script>
+	<s:List width="100%" height="100%" id="mashLst" dataProvider="{_datas}" click="mashLst_clickHandler(event)">
+		<s:itemRenderer>
+			<fx:Component>
+				<s:IconItemRenderer labelField="label" iconField="icon" iconWidth="32" iconHeight="32" />
+			</fx:Component>
+		</s:itemRenderer>
+	</s:List>
+</s:View>

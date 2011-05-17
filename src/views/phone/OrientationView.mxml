@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<common:RootNavigatorView xmlns:fx="http://ns.adobe.com/mxml/2009"
+						  xmlns:s="library://ns.adobe.com/flex/spark"
+						  xmlns:common="views.common.*"
+						  viewActivate="view1_activateHandler(event)">
+	<fx:Script>
+		<![CDATA[
+			/**
+			 * Based on Tour De Flex 'SampleRotateScreen'. 
+			 */
+			protected function view1_activateHandler(event:Event):void
+			{
+				stage.addEventListener(StageOrientationEvent.ORIENTATION_CHANGE, 
+					function(event:StageOrientationEvent):void 
+					{
+						lbl.text = "Orientation changed from " + event.beforeOrientation + " to " + event.afterOrientation;
+						switch (event.afterOrientation)
+						{
+							case StageOrientation.DEFAULT:
+								trace("Default orientation");
+								break;
+							case StageOrientation.ROTATED_RIGHT:
+								trace("Rotated right");
+								break;
+							case StageOrientation.ROTATED_LEFT:
+								trace("Rotated left");
+								break;
+							case StageOrientation.UPSIDE_DOWN:
+								trace("Upside down");
+								break;
+							case StageOrientation.UNKNOWN:
+								trace("Unknown");
+								break;
+						}
+					}
+				);
+			} 
+		]]>
+		
+	</fx:Script>
+	
+	<common:states>
+		<s:State name="landscape"/>
+		<s:State name="portrait"/>
+	</common:states>
+	
+	<s:Label id="lbl" top="40" width="95%" horizontalCenter="0"/>
+	
+	<s:HGroup horizontalCenter="0" verticalCenter="0">
+		<s:Button label="Landscape Mode" click="stage.setAspectRatio(StageAspectRatio.LANDSCAPE);"/>
+		<s:Button label="Portrait Mode" click="stage.setAspectRatio(StageAspectRatio.PORTRAIT);"/>
+	</s:HGroup>  
+</common:RootNavigatorView>

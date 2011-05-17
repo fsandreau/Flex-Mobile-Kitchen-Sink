@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<common:RootNavigatorView xmlns:fx="http://ns.adobe.com/mxml/2009" 
+	xmlns:s="library://ns.adobe.com/flex/spark" xmlns:common="views.common.*"
+	xmlns:mx="library://ns.adobe.com/flex/mx"
+	viewActivate="view1_viewActivateHandler(event)">
+	<fx:Script>
+		<![CDATA[
+			import spark.events.ViewNavigatorEvent;
+			
+			protected var v:Video;
+			protected var c:Camera;
+			
+			protected function view1_viewActivateHandler(event:ViewNavigatorEvent):void
+			{
+				if (Camera.isSupported)
+				{
+					v = new Video(width, height);
+					uic.addChild(v);
+					c = Camera.getCamera();
+					c.setMode(width, height, 10);
+					v.attachCamera(c);
+					
+				}
+				else lbl.text = "Camera not supported";
+
+			}
+		]]>
+	</fx:Script>
+	<s:Label id="lbl"/>
+	<mx:UIComponent id="uic" width="100%" height="100%"/>
+</common:RootNavigatorView>

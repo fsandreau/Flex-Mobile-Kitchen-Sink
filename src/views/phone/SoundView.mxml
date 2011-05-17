@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<common:RootNavigatorView xmlns:fx="http://ns.adobe.com/mxml/2009"  
+	xmlns:s="library://ns.adobe.com/flex/spark" xmlns:common="views.common.*" xmlns:mx="library://ns.adobe.com/flex/mx" xmlns:components="views.components.*">
+	<fx:Script>
+		<![CDATA[
+			import mx.collections.ArrayCollection;
+			import mx.events.FlexEvent;
+			
+			[Bindable]
+			private var _datas:ArrayCollection = new ArrayCollection([
+				{label:"Play sound", url:PlaySoundView, hasChild:true},
+				{label:"Microphone", url:MicrophoneView, hasChild:true}
+			]);
+			
+			protected function list1_clickHandler(event:MouseEvent):void
+			{
+				if(lstSounds.selectedItem != null && lstSounds.selectedItem.hasChild) {
+					navigator.pushView(lstSounds.selectedItem.url, lstSounds.selectedItem);
+				}
+			}
+			
+		]]>
+	</fx:Script>
+	<s:List id="lstSounds" dataProvider="{_datas}" width="100%" click="list1_clickHandler(event)"/>
+</common:RootNavigatorView>

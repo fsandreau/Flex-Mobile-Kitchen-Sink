@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<common:RootNavigatorView xmlns:fx="http://ns.adobe.com/mxml/2009" 
+	xmlns:s="library://ns.adobe.com/flex/spark" xmlns:common="views.common.*">
+	<fx:Script>
+		<![CDATA[
+			import mx.collections.ArrayCollection;
+			import mx.events.FlexEvent;
+			
+			import spark.events.ViewNavigatorEvent;
+			
+			[Bindable]
+			private var _datas:ArrayCollection = new ArrayCollection([
+				{label:"Camera Direct Access", url:RawCameraView, hasChild:true},
+				{label:"Camera Roll", url:CameraRollView, hasChild:true},
+				{label:"Take Picture", url:CameraTakePictureView, hasChild:true}
+			]);
+			
+			protected function camList_clickHandler(event:MouseEvent):void
+			{
+				if((camList.selectedItem != null) && camList.selectedItem.hasChild) {
+					navigator.pushView(camList.selectedItem.url, camList.selectedItem);
+				}
+			}
+			
+		]]>
+	</fx:Script>
+	<s:List dataProvider="{_datas}" labelField="label" width="100%" height="100%" id="camList" 
+		click="camList_clickHandler(event)" />
+</common:RootNavigatorView>

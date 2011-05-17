@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<common:RootNavigatorView xmlns:fx="http://ns.adobe.com/mxml/2009" 
+						  xmlns:s="library://ns.adobe.com/flex/spark" xmlns:common="views.common.*"
+						  creationComplete="init(event)">
+	<fx:Script>
+		<![CDATA[
+			/**
+			 * Based on Tour De Flex 'SampleCameraCapture'. 
+			 */
+			import flash.filters.ColorMatrixFilter;
+			
+			import mx.events.FlexEvent;
+			protected var myCam:CameraUI;
+			
+			protected function init(event:FlexEvent):void
+			{
+				if (CameraUI.isSupported){
+					
+					currentState = "normal";
+					myCam = new CameraUI();
+					myCam.addEventListener(MediaEvent.COMPLETE, onComplete);
+				}
+				else currentState = "unsupported";
+			}
+			
+			protected function btnPic_clickHandler(event:MouseEvent):void
+			{
+				img.filters = [];
+				myCam.launch(MediaType.IMAGE);
+			} 
+			
+			protected function onComplete(evt:MediaEvent):void
+			{
+				img.source = evt.data.file.url;
+			}
+			
+			protected function applyFilter():void
+			{
+				if (img.filters.length==0)
+				{
+					var matrixArray:Array = [.33,.33,.33,0,0,
+						.33,.33,.33,0,0,
+						.33,.33,.33,0,0,
+						0,0,0,1,0];
+					var blackWhiteFilter:ColorMatrixFilter = new ColorMatrixFilter(matrixArray);
+					img.filters = [blackWhiteFilter];
+					btnBW.label = "COLOR";
+				}
+				else 
+				{
+					img.filters = [];
+					btnBW.label = "BLACK WHITE FILTER";
+				}
+			}
+		]]>
+	</fx:Script>
+	
+	<common:states>
+		<s:State name="normal"/>
+		<s:State name="unsupported"/>
+	</common:states>
+	
+	<common:layout>
+		<s:VerticalLayout paddingTop="20" paddingBottom="20" paddingLeft="10" paddingRight="20" gap="40" 
+						  horizontalAlign="center" verticalAlign="middle"/>
+	</common:layout>
+	
+	<s:Label text="This device does not support CameraUI." width="95%" includeIn="unsupported"/>
+	<s:HGroup includeIn="normal">
+		<s:Button id="btnPic" click="btnPic_clickHandler(event)" label="TAKE A PICTURE" width="220" height="93"/>
+		<s:Button id="btnBW" click="applyFilter()" label="BLACK WHITE FILTER" width="220" height="93" />
+	</s:HGroup>
+	
+	<s:Image id="img" height="649" y="124" width="460" x="10"/> 
+</common:RootNavigatorView>

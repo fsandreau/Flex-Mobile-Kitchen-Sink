@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<common:RootNavigatorView xmlns:fx="http://ns.adobe.com/mxml/2009"
+	viewActivate="rootnavigatorview1_activateHandler(event)"
+	xmlns:s="library://ns.adobe.com/flex/spark" xmlns:common="views.common.*">
+	<fx:Script>
+		<![CDATA[
+			/**
+			 * Based on Tour De Flex 'SampleAccelerometer'. 
+			 */
+			import flash.events.AccelerometerEvent;
+			import flash.sensors.Accelerometer;
+			
+			import mx.events.FlexEvent;
+			
+			protected var accelerometer:Accelerometer;    
+			
+			protected function onUpdate(event:AccelerometerEvent):void 
+			{
+				log.appendText("acceleration X: " + event.accelerationX.toString() + "\n"
+					+ "acceleration Y: " + event.accelerationY.toString() + "\n"
+					+ "acceleration Z " + event.accelerationZ.toString()  + "\n"
+					+ "timestamp: " + event.timestamp.toString()  + "\n");
+				trace("Scroll v is " + TextField(log.textDisplay).scrollV);
+				TextField(log.textDisplay).scrollV = TextField(log.textDisplay).scrollV+1;
+				trace("Scroll v now " + TextField(log.textDisplay).scrollV);
+			}
+			
+			protected function onRemove(event:FlexEvent):void
+			{
+				this.accelerometer.removeEventListener(AccelerometerEvent.UPDATE, onUpdate);
+			}
+			
+			protected function rootnavigatorview1_activateHandler(event:Event):void
+			{
+				if (Accelerometer.isSupported)
+				{
+					currentState = "normal";
+					accelerometer = new Accelerometer();
+					accelerometer.setRequestedUpdateInterval(1000);
+					accelerometer.addEventListener(AccelerometerEvent.UPDATE, onUpdate);
+					addEventListener(FlexEvent.REMOVE, onRemove);
+				} 
+				else 
+				{
+					currentState = "unsupported";
+					lblSupport.text = "Accelerometer feature not supported on this device.";
+				}	
+			}
+			
+		]]>
+	</fx:Script>
+	
+	<common:states>
+		<s:State name="normal"/>
+		<s:State name="unsupported"/>
+	</common:states>
+	
+	<common:layout>
+		<s:VerticalLayout paddingTop="15" paddingBottom="15" paddingLeft="15" paddingRight="15" gap="40"/>
+	</common:layout>
+	
+	<s:Label id="lblSupport" includeIn="unsupported" width="95%"/>
+	<s:TextArea width="100%" text="The Accelerometer dispatches events based on activity detected by the device's motion sensor representing location or movement along a 3-dimensional axis." includeIn="normal"/>
+	<s:VGroup width="400" includeIn="normal">
+		<s:Label text="Event Log:"/>
+		<s:TextArea id="log" editable="false" height="200"/>
+	</s:VGroup>
+</common:RootNavigatorView>

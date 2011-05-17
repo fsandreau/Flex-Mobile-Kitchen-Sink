@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<common:RootNavigatorView xmlns:fx="http://ns.adobe.com/mxml/2009" 
+	xmlns:s="library://ns.adobe.com/flex/spark" xmlns:common="views.common.*"
+	creationComplete="init()">
+	<fx:Script>
+		<![CDATA[
+			/**
+			 * Based on Tour De Flex 'SampleMicrophone' sample
+			 */
+			import flash.events.SampleDataEvent;
+			import flash.media.Microphone;
+			import flash.media.Sound;
+			import flash.utils.ByteArray;
+			
+			import mx.collections.ArrayCollection;
+			
+			[Bindable]protected var microphoneList:ArrayCollection;
+			
+			[Bindable]protected var isRecording:Boolean = false;
+			
+			[Bindable]protected var isPlaying:Boolean = false;
+			
+			[Bindable]protected var soundData:ByteArray;
+			
+			protected var microphone:Microphone;
+			protected var sound:Sound;
+			protected var channel:SoundChannel;
+			
+			protected function init():void
+			{
+				if (Microphone.isSupported)
+				{
+					currentState = "normal";
+					microphoneList = new ArrayCollection(Microphone.names);
+					micChoices.selectedIndex=0;
+				}
+				else currentState = "unsupported";
+			}
+			
+			protected function startRecording():void
+			{
+				isRecording = true;
+				microphone = Microphone.getMicrophone(micChoices.selectedIndex);
+				microphone.rate = 44;
+				microphone.gain = 100;
+				soundData = new ByteArray();
+				trace("Recording");
+				microphone.addEventListener(SampleDataEvent.SAMPLE_DATA, onSampleDataReceived);
+				
+			}
+			
+			protected function stopRecording():void
+			{
+				isRecording = false;
+				trace("Stopped recording");
+				microphone.removeEventListener(SampleDataEvent.SAMPLE_DATA, onSampleDataReceived);
+			}
+			
+			protected function onSampleDataReceived(event:SampleDataEvent):void
+			{
+				while(event.data.bytesAvailable)
+				{
+					var sample:Number = event.data.readFloat();
+					soundData.writeFloat(sample);
+				}
+			}
+			
+			protected function soundCompleteHandler(event:Event):void
+			{
+				isPlaying = false;
+			}
+			
+			protected function startPlaying():void
+			{
+				isPlaying = true
+				soundData.position = 0;
+				sound = new Sound();
+				sound.addEventListener(SampleDataEvent.SAMPLE_DATA, soundSampleDataHandler);
+				channel = sound.play();
+				channel.addEventListener(Event.SOUND_COMPLETE, soundCompleteHandler);    
+			}
+			
+			protected function soundSampleDataHandler(event:SampleDataEvent):void
+			{
+				if (!soundData.bytesAvailable > 0)
+				{
+					return;
+				}
+				
+				for (var i:int = 0; i < 8192; i++)
+				{
+					var sample:Number = 0;
+					if (soundData.bytesAvailable > 0)
+					{
+						sample = soundData.readFloat();
+					}
+					event.data.writeFloat(sample); 
+					event.data.writeFloat(sample);  
+				}
+				
+			}
+			
+			protected function stopPlaying():void
+			{
+				channel.stop();
+				isPlaying = false;
+			}
+			
+			protected function toggleRecording():void
+			{
+				if (isRecording)
+				{
+					isRecording = false;
+					btnRecord.label = "Record";
+					stopRecording();
+				}
+				else
+				{
+					isRecording = true;
+					btnRecord.label = "Stop Recording";
+					startRecording();
+				}
+			}
+		]]>
+	</fx:Script>
+	
+	<common:states>
+		<s:State name="normal"/>
+		<s:State name="unsupported"/>
+	</common:states>
+	
+	<common:layout>
+		<s:VerticalLayout paddingTop="10" paddingBottom="10" paddingLeft="10" paddingRight="10" gap="40" 
+						  horizontalAlign="center" verticalAlign="middle"/>
+	</common:layout>
+	
+	<s:Label id="lblSupport" text="This feature is not supported on this device." includeIn="unsupported"/>
+	<s:VGroup width="100%" height="100%" includeIn="normal" gap="40" horizontalAlign="center">
+		<s:Label width="98%" verticalAlign="justify" color="#FFFFFF" 
+				 text="This sample allows you to record audio such as voice memo's using a built-in or external mic. The Microphone.names
+				 property will return the list of all available sound input devices found (see init method in code):"/>
+		
+		<s:VGroup top="70" horizontalAlign="center" horizontalCenter="0">
+			<s:Label text="Select microphone:"/>
+			<s:DropDownList id="micChoices" width="300" height="100" dataProvider="{microphoneList}" selectedIndex="0"/>
+		</s:VGroup>
+		<s:VGroup bottom="5" horizontalCenter="0">
+			<s:HGroup horizontalCenter="0" verticalAlign="middle">
+				<s:Button id="btnRecord" label="Record" click="toggleRecording()" enabled="{!isPlaying}"/>
+				<s:Button id="btnPlay" label="Play" click="startPlaying()" enabled="{!isRecording}"/>
+			</s:HGroup>
+		</s:VGroup>
+	</s:VGroup>
+</common:RootNavigatorView>

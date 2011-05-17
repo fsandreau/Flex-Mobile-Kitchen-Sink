@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<common:RootNavigatorView xmlns:fx="http://ns.adobe.com/mxml/2009" 
+						  xmlns:s="library://ns.adobe.com/flex/spark" xmlns:common="views.common.*">
+	
+	<fx:Script>
+		<![CDATA[
+			import flash.system.fscommand;
+			protected function button1_clickHandler(event:MouseEvent):void
+			{
+				
+			}
+		]]>
+	</fx:Script>
+	
+	<s:Button label="Vibrate" click="button1_clickHandler(event)" />
+</common:RootNavigatorView>

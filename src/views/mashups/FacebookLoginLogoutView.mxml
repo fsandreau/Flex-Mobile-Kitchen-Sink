@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<common:RootNavigatorView xmlns:fx="http://ns.adobe.com/mxml/2009" 
+						  xmlns:s="library://ns.adobe.com/flex/spark" xmlns:common="views.common.*"						  
+						  creationComplete="rootnavigatorview1_creationCompleteHandler(event)"
+						  currentState="Main" viewActivate="rootnavigatorview1_viewActivateHandler(event)">
+	<common:states>
+		<s:State name="Main"/>
+		<s:State name="Logout"/>
+	</common:states>
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+	<fx:Script>
+		<![CDATA[
+			import com.facebook.graph.FacebookMobile;
+			import com.facebook.graph.data.FacebookSession;
+			
+			import mx.events.FlexEvent;
+			
+			import spark.events.ViewNavigatorEvent;
+			private var appID:String = "462ec5354dcbe4e0b3e5f78e9fa38f0f";
+			
+			protected function rootnavigatorview1_creationCompleteHandler(event:FlexEvent):void
+			{
+				FacebookMobile.init(appID, handleLogin);
+			}
+			
+			private function handleLogin(session:Object, fail:Object):void {
+				if (session != null) {
+					currentState = "Logout";
+					txtUser.text = "User name : " + (session as FacebookSession).user.name; 
+				}
+			}
+			
+			private function doLoginLogout():void {
+				var webView:StageWebView = new StageWebView();
+				if(currentState == "Main") {
+					FacebookMobile.login(handleLogin, stage, [], webView);
+				}
+				else {
+					FacebookMobile.logout();
+					currentState = "Main";
+				}
+			}
+			
+			protected function rootnavigatorview1_viewActivateHandler(event:ViewNavigatorEvent):void
+			{
+				var session:FacebookSession = FacebookMobile.getSession(); 
+				if(session != null && session.uid != null) {
+					currentState = "Logout";
+					txtUser.text = "User name : " + FacebookMobile.getSession().user.name;
+				}
+				else {
+					currentState = "Main";
+					
+				}
+			}
+			
+		]]>
+	</fx:Script>
+	<common:layout>
+		<s:VerticalLayout horizontalAlign="center" gap="20" paddingTop="20"/>
+	</common:layout>
+	<s:Button click="doLoginLogout()" icon="@Embed('assets/images/facebook_login.png')"
+			  width.Logout="202" icon.Logout="@Embed('assets/images/LogoutNormal2x.png')"
+			  width.Main="463"/>
+	<s:Label includeIn="Logout" text="User name : " id="txtUser"/>
+</common:RootNavigatorView>

@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:View xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		xmlns:s="library://ns.adobe.com/flex/spark" title="Base UI" actionBarVisible="true" 
+		xmlns:searchtweetsfrom="services.searchtweetsfrom.*" viewActivate="view1_viewActivateHandler(event)" xmlns:searchtweetsby="services.searchtweetsby.*">	
+	<fx:Script>
+		<![CDATA[
+			import mx.collections.ArrayCollection;
+			import mx.rpc.events.FaultEvent;
+			import mx.rpc.events.ResultEvent;
+			import mx.utils.StringUtil;
+			
+			import spark.events.ViewNavigatorEvent;
+			
+			import valueObjects.Tweets;
+			
+			[Bindable]
+			private var _tweetsResult:ArrayCollection;
+			
+			protected function btnRefresh_clickHandler(event:MouseEvent):void
+			{
+				if(StringUtil.trim(txtSearch.text).length >= 3) {
+					searchTweetsService.getTweetsBy(txtSearch.text);
+				}				
+			}
+			
+			protected function searchTweetsService_resultHandler(event:ResultEvent):void
+			{
+				_tweetsResult = (event.result as Tweets).results;				
+			}
+			
+			protected function searchTweetsService_faultHandler(event:FaultEvent):void
+			{
+				errorLbl.text = event.fault.faultDetail;
+			}
+			
+			protected function view1_viewActivateHandler(event:ViewNavigatorEvent):void
+			{
+				btnRefresh_clickHandler(null);
+			}
+		]]>
+	</fx:Script>
+	<fx:Declarations>
+		<searchtweetsby:SearchTweetsBy id="searchTweetsService" showBusyCursor="true" 
+			result="searchTweetsService_resultHandler(event)"
+			fault="searchTweetsService_faultHandler(event)" />
+		<s:VerticalLayout />
+	</fx:Declarations>
+	<s:navigationContent>
+		<s:Button label="Back" id="backNav" click="navigator.popView()" />
+	</s:navigationContent>
+	<s:titleContent>
+		<s:TextInput id="txtSearch" width="276" text="dsk"/>
+	</s:titleContent>
+	<s:actionContent>
+		<s:Button id="btnRefresh" icon="@Embed('assets/images/Arrow-Circle-Left-UI-48.png')" 
+			click="btnRefresh_clickHandler(event)"/>	
+	</s:actionContent>
+	
+	
+	<s:Label id="errorLbl" fontWeight="bold" />
+	<s:List id="lstTrendsAvail"  width="100%" dataProvider="{_tweetsResult}">
+		<s:itemRenderer>
+			<fx:Component>
+				<s:IconItemRenderer iconField="profile_image_url" labelField="created_at" messageField="text" />
+			</fx:Component>
+		</s:itemRenderer>
+	</s:List>
+</s:View>

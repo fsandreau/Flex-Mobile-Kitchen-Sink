@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<common:RootNavigatorView xmlns:fx="http://ns.adobe.com/mxml/2009" 
+						  xmlns:s="library://ns.adobe.com/flex/spark" xmlns:common="views.common.*"
+						  viewActivate="rootnavigatorview1_viewActivateHandler(event)">
+	<fx:Script>
+		<![CDATA[
+			import com.facebook.graph.Facebook;
+			import com.facebook.graph.FacebookMobile;
+			import com.facebook.graph.net.FacebookRequest;
+			
+			import mx.collections.ArrayCollection;
+			
+			import spark.events.ViewNavigatorEvent;
+			
+			[Bindable]
+			private var _results:Array;
+			
+			protected function rootnavigatorview1_viewActivateHandler(event:ViewNavigatorEvent):void
+			{
+				if(FacebookMobile.getSession() != null) {
+					currentState = "RunQuery";
+				}
+				else {
+					currentState = "Connect";
+				}
+			}
+			
+			private function handleQuery(result:Object, fault:Object):void {
+				_results = result as Array;
+				busyInd.visible = false;
+			}
+			protected function btnRun_clickHandler(event:MouseEvent):void
+			{
+				var query:String = "SELECT uid, name, pic_square, status FROM user ";
+					query +=  "where uid IN (SELECT uid2 FROM friend WHERE uid1 = " + 
+								FacebookMobile.getSession().uid + ")";
+					query += "order by last_name limit 30";
+				FacebookMobile.fqlQuery(query, handleQuery);
+				busyInd.visible = true;
+			}
+			
+		]]>
+	</fx:Script>
+	<common:states>
+		<s:State name="Connect"/>
+		<s:State name="RunQuery"/>
+	</common:states>
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+	<s:Button includeIn="RunQuery" x="160" y="10" label="Run Query" id="btnRun" click="btnRun_clickHandler(event)"/>
+	<s:Label includeIn="Connect" x="89" y="10" text="Login before running query"/>
+	<s:Button includeIn="Connect" x="142" y="40" label="Connect View" 
+		click="navigator.pushView(FacebookLoginLogoutView)"/>
+	<s:List includeIn="RunQuery" x="1" y="87" width="100%" height="438"
+			dataProvider="{new ArrayCollection(_results)}">
+		<s:itemRenderer>
+			<fx:Component>
+				<s:IconItemRenderer iconField="pic_square" labelField="name" />
+			</fx:Component>
+		</s:itemRenderer>
+	</s:List>
+	<s:BusyIndicator includeIn="RunQuery" x="220" y="257" visible="false" id="busyInd" />
+</common:RootNavigatorView>

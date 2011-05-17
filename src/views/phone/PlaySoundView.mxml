@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="utf-8"?>
+<common:RootNavigatorView xmlns:fx="http://ns.adobe.com/mxml/2009" 
+	xmlns:s="library://ns.adobe.com/flex/spark" xmlns:common="views.common.*"
+	creationComplete="rootnavigatorview1_creationCompleteHandler(event)">
+	<fx:Script>
+		<![CDATA[
+			import mx.collections.ArrayCollection;
+			import mx.events.FlexEvent;
+			
+			[Bindable]
+			private var songs:ArrayCollection;
+			// Sound Channel to monitor
+			private var song:SoundChannel;     
+			
+			// Request object for obtaining mp3
+			private var request:URLRequest     
+			
+			// Pause state management
+			private var paused:Boolean = true;     
+			
+			// Stopped state management
+			private var stopped:Boolean = false;     
+			
+			// Retains what position the song was in
+			// when it was paused, so we can go back to
+			// the same position when we hit play again.
+			private var position:Number;     
+			
+			[Bindable]
+			// Sound... Factory for initializing our song.
+			private var soundFactory:Sound;
+			
+			protected function rootnavigatorview1_creationCompleteHandler(event:FlexEvent):void
+			{
+				songs = new ArrayCollection();
+				songs.addItem("assets/sounds/04-grinder.mp3");
+				songs.addItem("http://downloads.khinsider.com/download-to-phone/command-conquer-red-alert-2/01-hell-march-2.mp3");
+				stopped = true;
+				paused = false;
+			}
+			
+			protected function songsId_clickHandler(event:MouseEvent):void
+			{
+				if(songsId.selectedItem != null) {
+					stop();
+					playMP3(songsId.selectedIndex);
+				}
+			}
+			
+			// Alert songNameChanged bind when id3 information
+			// has been loaded.
+			private function id3Handler(event:Event):void {
+				txtInfos.text = soundFactory.id3.artist  + " - " + soundFactory.id3.songName;
+			}
+			
+			// Play MP3 at specified index in songURLs array.
+			public function playMP3(mp3Index:Number):void {
+				stopped = false;
+				paused = false;
+				position = 0;
+				var request:URLRequest =
+					new URLRequest(songsId.selectedItem as String);
+				soundFactory = new Sound();
+				soundFactory.addEventListener(Event.ID3, id3Handler);
+				soundFactory.load(request);
+				song = soundFactory.play();
+				song.addEventListener(Event.SOUND_COMPLETE,
+					soundCompleteHandler);
+				playButton.label = "||";
+			}
+			
+			// Start the next song, once the current one has
+			// finished playing.
+			private function soundCompleteHandler(event:Event):void {
+				
+			}
+			
+			// Pause current song, or play song if already paused.
+			// Setting playButton label such that any GUI button
+			// that is attached will change with play or pause.
+			public function pause():void {
+				if (!stopped) {
+					if (!paused) {
+						paused = true;
+						position = song.position;
+						song.stop();
+						playButton.label = ">";
+					} else {
+						paused = false;
+						song = soundFactory.play(position);
+						song.addEventListener(Event.SOUND_COMPLETE,
+							soundCompleteHandler);
+						playButton.label = "||";
+					}
+				} else {
+					playMP3(songsId.selectedIndex);
+					playButton.label = "||";
+				}
+			}     
+			
+			// Stop current song
+			public function stop():void {
+				if(stopped) {
+					return;
+				}
+				stopped = true;
+				song.stop();
+				position = 0;
+				playButton.label = ">";
+			}     
+			
+			// Switch to Next Song
+			public function next():void {
+				songsId.selectedIndex++;
+				if (songsId.selectedIndex >= songs.length) {
+					songsId.selectedIndex = 0;
+				}     
+				
+				song.stop();
+				position = 0;     
+				
+				// Track if player was already playing,
+				// paused, or stopped. If stopped or
+				// paused, still "play" so we can start
+				// streaming and obtain the id3 info.     
+				
+				var wasStopped:Boolean = stopped;
+				var wasPaused:Boolean = paused;     
+				
+				playMP3(songsId.selectedIndex);     
+				
+				if (wasStopped) {
+					stop();
+					return;
+				}     
+				
+				if (wasPaused)
+				{
+					paused = true;
+					position = song.position;
+					song.stop();
+				}
+			}     
+			
+			// Switch to Previous Song
+			public function prev():void {
+				songsId.selectedIndex--;
+				if (songsId.selectedIndex < 0) {
+					songsId.selectedIndex = songs.length - 1;
+				}    
+				
+				song.stop();
+				position = 0;    
+				
+				// Track if player was already playing,
+				// paused, or stopped. If stopped or
+				// paused, still "play" so we can start
+				// streaming and obtain the id3 info.    
+				
+				var wasStopped:Boolean = stopped;
+				var wasPaused:Boolean = paused;    
+				
+				playMP3(songsId.selectedIndex);    
+				
+				if (wasStopped) {
+					stop();
+					return;
+				}
+				if (wasPaused) {
+					paused = true;
+					position = song.position;
+					song.stop();
+				}
+			}
+			
+			protected function playButton_clickHandler(event:MouseEvent):void
+			{
+				if(songsId.selectedItem == null) {
+					return;
+				}
+				if(stopped) {
+					playMP3(songsId.selectedIndex);
+					return;
+				}
+				pause();
+			}
+			
+		]]>
+	</fx:Script>
+	<s:Panel id="simpleMP3" width="100%" height="100%">
+		<s:layout>
+			<s:VerticalLayout/>
+		</s:layout>
+		
+		<s:List dataProvider="{songs}" width="100%" id="songsId" click="songsId_clickHandler(event)" />
+		<s:Label id="txtInfos" />
+		<s:Spacer height="100%" />
+		<s:HGroup width="100%">
+			<s:Button id="prevButton" 	label="&lt;&lt;" click="prev()" />
+			<s:Button id="playButton" 	label=">" click="playButton_clickHandler(event)" />
+			<s:Button id="stopButton" 	label="X" click="stop()" />
+			<s:Button id="nextButton" 	label="&gt;&gt;" click="next()" />
+		</s:HGroup>
+	</s:Panel>
+</common:RootNavigatorView>
