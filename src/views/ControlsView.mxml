@@ -40,5 +40,5 @@
 		]]>
 	</fx:Script>
 	<s:List dataProvider="{_datas}" width="100%" height="100%" id="lstControls" 
-		click="lstControls_clickHandler(event)"/>
+		click="lstControls_clickHandler(event)" labelField="label"/>
 </s:View>

@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<common:RootNavigatorView xmlns:fx="http://ns.adobe.com/mxml/2009" 
+						  xmlns:s="library://ns.adobe.com/flex/spark" xmlns:common="views.common.*"
+						  creationComplete="rootnavigatorview1_creationCompleteHandler(event)">
+	<fx:Script>
+		<![CDATA[
+			import mx.events.FlexEvent;
+			
+			protected function rootnavigatorview1_creationCompleteHandler(event:FlexEvent):void
+			{
+				Multitouch.inputMode = MultitouchInputMode.GESTURE;
+				if(Multitouch.supportsGestureEvents){
+					image.addEventListener(TransformGestureEvent.GESTURE_PAN,
+						onGesturePan);
+					image.addEventListener(TransformGestureEvent.GESTURE_ROTATE,
+						onGestureRotate);
+					image.addEventListener(TransformGestureEvent.GESTURE_SWIPE,
+						onGestureSwipe);
+					image.addEventListener(TransformGestureEvent.GESTURE_ZOOM,
+						onGestureZoom);
+				} 
+				else {
+					status.text="gestures not supported";
+				}
+			}
+			
+			private function onGesturePan(event:TransformGestureEvent):void{
+				info.text = "event = " + event.type + "\n" +
+					"offsetX = " + event.offsetX + "\n" +
+					"offsetY = " + event.offsetY;
+				image.x += event.offsetX;
+				image.y += event.offsetY;
+			}
+			private function onGestureRotate(event:TransformGestureEvent):void {
+					info.text = "event = " + event.type + "\n" +
+						"rotation = " + event.rotation;
+					image.transformAround(new Vector3D(image.width/2,
+						image.height/2, 0),
+						null,
+						new Vector3D(0,0,image.rotationZ
+							+ event.rotation));
+				}
+			private function onGestureSwipe(event:TransformGestureEvent):void {
+					var direction:String = "";
+					if (event.offsetX < 0) 
+						direction = "left";
+					if (event.offsetX == 1) 
+						direction = "right";
+					
+					if (event.offsetY == 1) 
+						direction = "down";
+					if (event.offsetY < 0) 
+						direction = "up";
+					
+					info.text = "event = " + event.type + "\n" +
+						"direction = " + direction;
+				}
+			private function onGestureZoom(event:TransformGestureEvent):void {
+				info.text = "event = " + event.type + "\n" +
+					"scaleX = " + event.scaleX + "\n" +
+					"scaleY = " + event.scaleY;
+				image.scaleX = image.scaleY *= event.scaleX;
+			}
+			
+			protected function button1_clickHandler(event:MouseEvent):void
+			{
+				image.rotation = 0;
+				image.scaleX = 1;
+				image.scaleY = 1;
+				image.x = 40;
+				image.y = 260;
+				info.text = "";
+			}
+			
+		]]>
+	</fx:Script>
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+	<s:Label id="status" text="Transform Gestures" top="10" width="100%"
+			 textAlign="center"/>
+	<s:HGroup width="100%" top="40" left="5" right="5">
+		<s:TextArea id="info" editable="false" width="100%" height="200"/>
+		<s:Button label="Reset" click="button1_clickHandler(event)"/>
+	</s:HGroup>
+	<s:Image id="image" x="40" y="260" width="400" height="400"
+			 source="@Embed('assets/images/android_icon.png')"/>
+</common:RootNavigatorView>

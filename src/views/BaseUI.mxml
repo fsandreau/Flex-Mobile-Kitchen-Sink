@@ -1,7 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
 <s:View xmlns:fx="http://ns.adobe.com/mxml/2009" 
 		xmlns:s="library://ns.adobe.com/flex/spark" title="Base UI" actionBarVisible="true">
-	<s:VGroup x="0" y="0" width="100%" height="100%" verticalAlign="middle" horizontalAlign="center">
-		<s:Label text="Comming Soon" />
-	</s:VGroup>
+	<fx:Script>
+		<![CDATA[
+			import mx.collections.ArrayCollection;
+			import mx.rpc.events.FaultEvent;
+			import mx.rpc.events.ResultEvent;
+			
+			import spark.events.ViewNavigatorEvent;
+			
+			import views.basicui.CustomEventsView;
+			import views.basicui.HorizontalLayoutView;
+			import views.basicui.MenuView;
+			import views.basicui.PreferencesView;
+			import views.basicui.ShowHideSoftKeyboardView;
+			import views.basicui.VerticalLayoutView;
+			import views.basicui.ViewsView;
+			import views.basicui.WindowEventsView;
+			import views.basicui.WindowLayoutView;
+			import views.basicui.WindowPropertiesView;
+			import views.basicui.WindowSoftInputView;
+			import views.basicui.WindowStandaloneView;
+			[Bindable]
+			private var _datas:ArrayCollection = new ArrayCollection([
+				{label:"Window Properties", url:WindowPropertiesView, hasChild:true},
+				{label:"Window Layout", url:WindowLayoutView, hasChild:true},
+				{label:"Window (Standalone)", url:WindowStandaloneView, hasChild:true},
+				{label:"Views", url:ViewsView, hasChild:true},
+				{label:"Custom Events", url:CustomEventsView, hasChild:true},
+				{label:"Window Events", url:WindowEventsView, hasChild:true},
+				{label:"Vertical Layout", url:VerticalLayoutView, hasChild:true},
+				{label:"Horozontal Layout", url:HorizontalLayoutView, hasChild:true},
+				{label:"Preferences", url:PreferencesView, hasChild:true},
+				{label:"Show / Hide Soft Keyboard", url:ShowHideSoftKeyboardView, hasChild:true},
+				{label:"Window Soft Input", url:WindowSoftInputView, hasChild:true},
+				{label:"Menu", url:MenuView, hasChild:true}
+			]);
+			
+			protected function lstBasicUI_clickHandler(event:MouseEvent):void
+			{
+				if(lstBasicUI.selectedItem != null && lstBasicUI.selectedItem.hasChild) {
+					navigator.pushView(lstBasicUI.selectedItem.url, lstBasicUI.selectedItem);
+				}
+			}
+			
+		]]>
+	</fx:Script>
+	<s:List dataProvider="{_datas}" width="100%" height="100%" labelField="label" id="lstBasicUI"
+		click="lstBasicUI_clickHandler(event)"/>
 </s:View>

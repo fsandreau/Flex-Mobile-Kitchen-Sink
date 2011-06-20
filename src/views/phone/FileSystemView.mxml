@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<common:RootNavigatorView xmlns:fx="http://ns.adobe.com/mxml/2009" 
+						  xmlns:s="library://ns.adobe.com/flex/spark" xmlns:common="views.common.*">
+	<fx:Script>
+		<![CDATA[
+			import mx.collections.ArrayCollection;
+			[Bindable]
+			private var _datas:ArrayCollection = new ArrayCollection([
+				{label:"Read and Write to the File System", url:ReadAndWriteFSView, hasChild:true},
+				{label:"File Browse for a Single File", url:BrowseSingleFSView, hasChild:true},
+				{label:"File Browse for Multiple Files", url:BrowseMultiFSView, hasChild:true},
+				{label:"Folder Aliases", url:FolderAliasView, hasChild:true}
+			]);
+			
+			protected function fsList_clickHandler(event:MouseEvent):void
+			{
+				if((fsList.selectedItem != null) && fsList.selectedItem.hasChild) {
+					navigator.pushView(fsList.selectedItem.url, fsList.selectedItem);
+				}
+			}
+			
+		]]>
+	</fx:Script>
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+	<s:List dataProvider="{_datas}" labelField="label" width="100%" height="100%" id="fsList" 
+			click="fsList_clickHandler(event)" />
+</common:RootNavigatorView>

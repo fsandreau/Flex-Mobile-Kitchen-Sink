@@ -109,4 +109,97 @@
     <property name="since_id_str" type="string" required="true"/>
     <property name="completed_in" type="double" required="true" default="0"/>
   </entity>
+  <service name="WeatherForecast">
+    <annotation name="ActionScriptGeneration">
+      <item name="WSDL-service">WeatherForecast</item>
+      <item name="ServiceType">WebService</item>
+      <item name="WSDL">http://www.webservicex.net/WeatherForecast.asmx?WSDL</item>
+      <item name="Package">services.weatherforecastTest</item>
+      <item name="WSDL-port">WeatherForecastSoap</item>
+    </annotation>
+    <annotation name="ServiceTypeGroup">
+      <item name="ServiceBackendType">WebService</item>
+    </annotation>
+    <annotation name="WSDLCollectionElementTypes">
+      <item name="http://www.webservicex.net,ArrayOfWeatherData">WeatherData::http://www.webservicex.net,WeatherData</item>
+    </annotation>
+    <annotation name="ServiceConfig">
+      <item name="DEFAULT_ENTITY_PACKAGE">valueObjectsTest</item>
+      <item name="WSDL-endpoint">http://www.webservicex.net/WeatherForecast.asmx</item>
+      <item name="LINKED_FILE"></item>
+    </annotation>
+    <function name="GetWeatherByZipCode" return-type="WeatherForecasts">
+      <annotation name="analyze group">
+        <item name="analyzed">true</item>
+      </annotation>
+      <annotation name="WSDLName">
+        <item name="GetWeatherByZipCode">http://www.webservicex.net,GetWeatherByZipCode</item>
+        <item name="SOAPAction">http://www.webservicex.net/GetWeatherByZipCode</item>
+      </annotation>
+      <annotation name="original signature">
+        <item name="inputParams">string</item>
+        <item name="returnType">WeatherForecasts</item>
+      </annotation>
+      <parameter name="ZipCode" type="string"/>
+    </function>
+    <function name="GetWeatherByPlaceName" return-type="WeatherForecasts">
+      <annotation name="analyze group">
+        <item name="analyzed">true</item>
+      </annotation>
+      <annotation name="WSDLName">
+        <item name="SOAPAction">http://www.webservicex.net/GetWeatherByPlaceName</item>
+        <item name="GetWeatherByPlaceName">http://www.webservicex.net,GetWeatherByPlaceName</item>
+      </annotation>
+      <annotation name="original signature">
+        <item name="inputParams">string</item>
+        <item name="returnType">WeatherForecasts</item>
+      </annotation>
+      <parameter name="PlaceName" type="string"/>
+    </function>
+  </service>
+  <entity name="WeatherForecasts">
+    <annotation name="EntityProperties">
+      <item name="EntityOriginalName">WeatherForecasts</item>
+    </annotation>
+    <annotation name="WSDLCollectionTypes">
+      <item name="Details">http://www.webservicex.net,ArrayOfWeatherData</item>
+    </annotation>
+    <annotation name="service Group">
+      <item name="service">WeatherForecast</item>
+    </annotation>
+    <annotation name="ServerProperties">
+      <item name="IncludeRemoteClass">nonempty</item>
+    </annotation>
+    <annotation name="ActionScriptGeneration">
+      <item name="Package">valueObjectsTest</item>
+    </annotation>
+    <property name="Latitude" type="float"/>
+    <property name="Longitude" type="float"/>
+    <property name="AllocationFactor" type="float"/>
+    <property name="FipsCode" type="string"/>
+    <property name="PlaceName" type="string"/>
+    <property name="StateCode" type="string"/>
+    <property name="Status" type="string"/>
+    <property name="Details" type="WeatherData[]"/>
+  </entity>
+  <entity name="WeatherData">
+    <annotation name="EntityProperties">
+      <item name="EntityOriginalName">WeatherData</item>
+    </annotation>
+    <annotation name="service Group">
+      <item name="service">WeatherForecast</item>
+    </annotation>
+    <annotation name="ServerProperties">
+      <item name="IncludeRemoteClass">nonempty</item>
+    </annotation>
+    <annotation name="ActionScriptGeneration">
+      <item name="Package">valueObjectsTest</item>
+    </annotation>
+    <property name="Day" type="string"/>
+    <property name="WeatherImage" type="string"/>
+    <property name="MaxTemperatureF" type="string"/>
+    <property name="MinTemperatureF" type="string"/>
+    <property name="MaxTemperatureC" type="string"/>
+    <property name="MinTemperatureC" type="string"/>
+  </entity>
 </model>

@@ -8,7 +8,9 @@
 			import views.phone.AccelerometerView;
 			import views.phone.CameraView;
 			import views.phone.ContactsView;
+			import views.phone.FileSystemView;
 			import views.phone.GeolocalisationView;
+			import views.phone.GestureView;
 			import views.phone.NotificationsView;
 			import views.phone.OrientationView;
 			import views.phone.PhotoGalleryView;
@@ -27,7 +29,9 @@
 				{label:"Orientation", url:OrientationView, hasChild:true},
 				{label:"Contacts", url:ContactsView, hasChild:true},
 				{label:"Camera", url:CameraView, hasChild:true},
-				{label:"Notifications", url:NotificationsView, hasChild:true}
+				{label:"Notifications", url:NotificationsView, hasChild:true},
+				{label:"Gesture", url:GestureView, hasChild:true},
+				{label:"File System", url:FileSystemView, hasChild:true}
 			]);
 			
 			protected function phoneList_clickHandler(event:MouseEvent):void

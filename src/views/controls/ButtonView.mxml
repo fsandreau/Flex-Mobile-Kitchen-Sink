@@ -1,7 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <common:RootNavigatorView xmlns:fx="http://ns.adobe.com/mxml/2009" 
 						  xmlns:s="library://ns.adobe.com/flex/spark" xmlns:common="views.common.*">
-	<fx:Declarations>
-		<!-- Place non-visual elements (e.g., services, value objects) here -->
-	</fx:Declarations>
+	
+	<fx:Script>
+		<![CDATA[
+			protected function btn2_clickHandler(event:MouseEvent):void
+			{
+				btn2.setStyle("chromeColor", "#FF0000");
+			}
+		]]>
+	</fx:Script>
+	
+	<common:layout>
+		<s:VerticalLayout />
+	</common:layout>
+	<s:Button label="I'am a Button" width="200" height="40" />
+	<s:Spacer height="100" />
+	<s:Button id="btn2" width="250" height="40" label="I'am a Button"
+			  click="btn2_clickHandler(event)" icon="@Embed('assets/images/chat.png')"/>
+	<s:Button width="250" height="40" click="btn2.visible = !btn2.visible" 
+			  label="Hide/Show Button above" />
+	<s:HGroup width="100%" height="300">
+		
+	</s:HGroup>
 </common:RootNavigatorView>

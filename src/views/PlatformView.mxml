@@ -1,7 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <s:View xmlns:fx="http://ns.adobe.com/mxml/2009" 
 		xmlns:s="library://ns.adobe.com/flex/spark" title="Platform">
-	<s:VGroup x="0" y="0" width="100%" height="100%" verticalAlign="middle" horizontalAlign="center">
-		<s:Label text="Comming Soon" />
-	</s:VGroup>
+<fx:Script>
+	<![CDATA[
+		import mx.collections.ArrayCollection;
+		
+		import views.platform.DatabaseView;
+		[Bindable]
+		private var _datas:ArrayCollection = new ArrayCollection([
+			{label:"Database", url:DatabaseView, hasChild:true},
+		]);
+		
+		protected function lstPaltform_clickHandler(event:MouseEvent):void
+		{
+			if(lstPaltform.selectedItem != null && lstPaltform.selectedItem.hasChild) {
+				navigator.pushView(lstPaltform.selectedItem.url, lstPaltform.selectedItem);
+			}
+		}
+		
+	]]>
+</fx:Script>
+	<s:List dataProvider="{_datas}" width="100%" height="100%" id="lstPaltform" click="lstPaltform_clickHandler(event)"/>
 </s:View>

@@ -37,14 +37,20 @@
 			protected function onUpdate(event:GeolocationEvent):void
 			{
 				trace("Update event called");
-				log.text = "latitude = " + event.latitude + 
-					"\nlongitude = " + event.longitude +
-					"\naltitude = " + event.altitude +
-					"\nverticalAccuracy = " + event.verticalAccuracy +
-					"\nhorizontalAccuracy = " + event.horizontalAccuracy +
-					"\nspeed = " + event.speed +
-					"\nheading = " + event.heading +
-					"\ntimestamp = " + event.timestamp;        
+				var mph:Number = event.speed*2.23693629;
+				var kph:Number = event.speed*3.6;
+				log.text = "Updated: " + new Date().toTimeString() + "\n\n"
+					+ "latitude: " + event.latitude.toString() + "\n"
+					+ "longitude: " + event.longitude.toString() + "\n"
+					+ "altitude: " + event.altitude.toString() + "\n"
+					+ "speed: " + event.speed.toString() + "\n"
+					+ "speed: " + mph.toString() + " MPH \n"
+					+ "speed: " + kph.toString() + " KPH \n"
+					+ "heading: " + event.heading.toString() + "\n"
+					+ "horizontal accuracy: "
+					+ event.horizontalAccuracy.toString() + "\n"
+					+ "vertical accuracy: "
+					+ event.verticalAccuracy.toString();        
 			}
 			
 			protected function onRemove(event:FlexEvent):void

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<common:RootNavigatorView xmlns:fx="http://ns.adobe.com/mxml/2009" 
+xmlns:s="library://ns.adobe.com/flex/spark" xmlns:common="views.common.*" 
+		creationComplete="rootnavigatorview1_creationCompleteHandler(event)">
+	<fx:Script>
+		<![CDATA[
+			import mx.events.FlexEvent;
+			
+			protected function rootnavigatorview1_creationCompleteHandler(event:FlexEvent):void
+			{
+				var s:String = "";
+				s += "File.applicationDirectory : " +
+					File.applicationDirectory.nativePath + "\n\n";
+				s += "File.applicationStorageDirectory : " +
+					File.applicationStorageDirectory.nativePath + "\n\n";
+				s += "File.desktopDirectory: " +
+					File.desktopDirectory.nativePath + "\n\n";
+				s += "File.documentsDirectory : " +
+					File.documentsDirectory.nativePath + "\n\n";
+				s += "File.userDirectory : " +
+					File.userDirectory.nativePath + "\n\n";
+				info.text = s;
+			}
+			
+		]]>
+	</fx:Script>
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+	<s:Label text="File System Paths" top="10" width="100%" textAlign="center"/>
+	<s:TextArea id="info" width="100%" height="100%" top="40" editable="false"/>
+</common:RootNavigatorView>

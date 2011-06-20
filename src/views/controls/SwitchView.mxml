@@ -4,4 +4,7 @@
 	<fx:Declarations>
 		<!-- Place non-visual elements (e.g., services, value objects) here -->
 	</fx:Declarations>
+	<s:CheckBox x="39" y="94" label="CheckBox : {chkBx.selected}" id="chkBx" />
+	<s:Button x="39" y="150" label="Change Checkbox" click="chkBx.selected = !chkBx.selected" />
+	<s:CheckBox x="39" y="253" label="Custom icon" />
 </common:RootNavigatorView>

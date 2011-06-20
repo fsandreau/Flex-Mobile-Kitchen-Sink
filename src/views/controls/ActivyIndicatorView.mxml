@@ -1,7 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <common:RootNavigatorView xmlns:fx="http://ns.adobe.com/mxml/2009" 
-						  xmlns:s="library://ns.adobe.com/flex/spark" xmlns:common="views.common.*">
+						  xmlns:s="library://ns.adobe.com/flex/spark" xmlns:common="views.common.*"
+						  viewActivate="rootnavigatorview1_viewActivateHandler(event)">
+	<fx:Script>
+		<![CDATA[
+			import spark.events.ViewNavigatorEvent;
+			
+			protected function rootnavigatorview1_viewActivateHandler(event:ViewNavigatorEvent):void
+			{
+				indicator.visible = true;
+				
+			}
+			
+			protected function button1_clickHandler(event:MouseEvent):void
+			{
+				indicator.visible = !indicator.visible;
+			}
+			
+		]]>
+	</fx:Script>
 	<fx:Declarations>
 		<!-- Place non-visual elements (e.g., services, value objects) here -->
 	</fx:Declarations>
+	
+	<s:BusyIndicator x="220" y="221" id="indicator" visible="false" />
+	<s:Button x="65" y="10" label="Show / Hide Busy Indicator" click="button1_clickHandler(event)"/>
 </common:RootNavigatorView>
