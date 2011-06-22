@@ -1,1 +1,0 @@
-﻿package  {		import flash.display.Sprite;	import flash.events.Event;	public class Block extends Sprite	{		public function Block() 		{			super();		}	}}

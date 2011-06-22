@@ -1,1 +1,0 @@
-﻿package  {	import flash.display.Sprite;	import flash.events.Event;		public class OptionPicker extends Sprite	{		public function OptionPicker() 		{			super();			addEventListener( Event.ADDED_TO_STAGE, doAdded );		}				protected function doAdded( event:Event ):void		{		}	}}
