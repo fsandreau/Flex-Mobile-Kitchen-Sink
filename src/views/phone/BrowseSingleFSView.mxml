@@ -1,7 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <common:RootNavigatorView xmlns:fx="http://ns.adobe.com/mxml/2009" 
 						  xmlns:s="library://ns.adobe.com/flex/spark" xmlns:common="views.common.*">
+	<fx:Script>
+		<![CDATA[
+			protected function button1_clickHandler(event:MouseEvent):void
+			{
+				var file:File = new File();
+				file.addEventListener(Event.SELECT, onFileSelect);
+				file.browseForOpen("Open");
+			}
+			private function onFileSelect(event:Event):void {
+				var file:File = File(event.currentTarget);
+				filepath.text = file.nativePath;
+				if(file.extension == "jpg"){
+					image.source = file.url;
+				}
+			}
+		]]>
+	</fx:Script>
 	<fx:Declarations>
 		<!-- Place non-visual elements (e.g., services, value objects) here -->
 	</fx:Declarations>
+	<s:Button horizontalCenter="0" top="10" label="Browse"
+			  click="button1_clickHandler(event)"/>
+	<s:Label id="filepath" left="10" right="10" top="100"/>
+	<s:Image id="image" width="230" height="350" top="150" horizontalCenter="0"/>
 </common:RootNavigatorView>

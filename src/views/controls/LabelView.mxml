@@ -1,7 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
 <common:RootNavigatorView xmlns:fx="http://ns.adobe.com/mxml/2009" 
-						  xmlns:s="library://ns.adobe.com/flex/spark" xmlns:common="views.common.*">
+						  xmlns:s="library://ns.adobe.com/flex/spark" xmlns:common="views.common.*" xmlns:local="*">
+	
+	<fx:Script>
+		<![CDATA[
+			private var isBigLabel:Boolean = false;
+			protected function btnChangeLbl_clickHandler(event:MouseEvent):void
+			{
+				if(isBigLabel) {
+					lblFxMb.setStyle("color", "Red");
+					lblFxMb.setStyle("fontWeight", "bold");
+					lblFxMb.setStyle("fontSize", "40");
+				}
+				else {
+					lblFxMb.setStyle("color", "Yellow");
+					lblFxMb.setStyle("fontWeight", "normal");
+					lblFxMb.setStyle("fontSize", "26");
+				}
+				isBigLabel = !isBigLabel;
+			}
+			
+			protected function btnChgBack_clickHandler(event:MouseEvent):void
+			{
+				
+			}
+			
+		]]>
+	</fx:Script>
+
 	<fx:Declarations>
 		<!-- Place non-visual elements (e.g., services, value objects) here -->
 	</fx:Declarations>
+	<common:layout>
+		<s:VerticalLayout horizontalAlign="center"/>
+	</common:layout>
+	<s:Label  width="449" height="235" id="lblLopsum" 
+			 text="Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,        when an unknown printer took a galley of type and scrambled it to make a type specimen book.        It has survived not only five centuries, but also the leap into electronic typesetting,        remaining essentially unchanged"/>
+	<s:Label text="Flex mobile" color="Red" fontSize="40" fontWeight="bold" id="lblFxMb" />
+	<s:Button label="Hide / Show" 
+			  click="lblLopsum.visible = !lblLopsum.visible;lblFxMb.visible = !lblFxMb.visible" />
+	<s:Button label="Change Label 2" id="btnChangeLbl" click="btnChangeLbl_clickHandler(event)" />
+	<s:Button  label="Label 1 background" id="btnChgBack" click="btnChgBack_clickHandler(event)"/>
 </common:RootNavigatorView>

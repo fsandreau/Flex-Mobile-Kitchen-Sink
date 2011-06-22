@@ -1,7 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
 <common:RootNavigatorView xmlns:fx="http://ns.adobe.com/mxml/2009" 
 						  xmlns:s="library://ns.adobe.com/flex/spark" xmlns:common="views.common.*">
+	<fx:Script>
+		<![CDATA[
+			import spark.components.Image;
+			protected function button1_clickHandler(event:MouseEvent):void
+			{
+				var file:File = new File();
+				file.addEventListener(FileListEvent.SELECT_MULTIPLE,
+					onMultipleFileSelect);
+				file.browseForOpenMultiple("Open");
+			}
+			private function onMultipleFileSelect(event:FileListEvent):void {
+				holder.removeAllElements();
+				for (var i:int=0; i<event.files.length; i++){
+					var f:File = event.files[i] as File;
+					if(f.extension == "jpg"){
+						var image:Image = new Image();
+						image.source = f.url;
+						image.scaleX = .1;
+						image.scaleY = .1;
+						holder.addElement(image);
+					}
+				}
+			}
+		]]>
+	</fx:Script>
 	<fx:Declarations>
 		<!-- Place non-visual elements (e.g., services, value objects) here -->
 	</fx:Declarations>
+	<s:Button horizontalCenter="0" top="10" label="Browse" click=
+			  "button1_clickHandler(event)"/>
+	<s:Label id="filepath" left="10" right="10" top="100"/>
+	<s:Scroller top="150" horizontalCenter="0" bottom="0">
+		<s:VGroup id="holder"/>
+	</s:Scroller>
 </common:RootNavigatorView>

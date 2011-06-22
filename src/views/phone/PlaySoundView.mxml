@@ -202,4 +202,5 @@
 			<s:Button id="nextButton" 	label="&gt;&gt;" click="next()" />
 		</s:HGroup>
 	</s:Panel>
+	
 </common:RootNavigatorView>
