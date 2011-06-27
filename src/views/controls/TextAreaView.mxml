@@ -1,7 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <common:RootNavigatorView xmlns:fx="http://ns.adobe.com/mxml/2009" 
 						  xmlns:s="library://ns.adobe.com/flex/spark" xmlns:common="views.common.*">
+	
+	<fx:Script>
+		<![CDATA[
+			private var toggle:Boolean = false;
+			protected function toogleProp_clickHandler(event:MouseEvent):void
+			{
+				if(toggle) {
+					txtArea.setStyle("color", "Black");
+					txtArea.setStyle("borderVisible", "false");
+					txtArea.setStyle("textAlign", "left");
+					toggle = false;
+				}
+				else {
+					txtArea.setStyle("color", "White");
+					txtArea.setStyle("borderVisible", "true");
+					txtArea.setStyle("textAlign", "center");
+					toggle = true;						
+				}
+			}
+		]]>
+	</fx:Script>
+	
 	<fx:Declarations>
 		<!-- Place non-visual elements (e.g., services, value objects) here -->
 	</fx:Declarations>
+	<common:layout>
+		<s:VerticalLayout horizontalAlign="center" verticalAlign="middle" />
+	</common:layout>
+	<s:TextArea id="txtArea" text="I'm a textarea" />
+	<s:Button label="Focus" click="txtArea.setFocus()" />
+	<s:Button label="Blur" click="txtArea.focusManager.hideFocus()" />
+	<s:Button label="Hide / Show" click="txtArea.visible = !txtArea.visible" />
+	<s:Button label="Toggle Properties" click="toogleProp_clickHandler(event)" id="toogleProp" />
 </common:RootNavigatorView>

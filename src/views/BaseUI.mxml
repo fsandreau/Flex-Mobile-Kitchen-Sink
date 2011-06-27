@@ -14,6 +14,7 @@
 			import views.basicui.MenuView;
 			import views.basicui.PreferencesView;
 			import views.basicui.ShowHideSoftKeyboardView;
+			import views.basicui.TabGroupsView;
 			import views.basicui.VerticalLayoutView;
 			import views.basicui.ViewsView;
 			import views.basicui.WindowEventsView;
@@ -23,6 +24,7 @@
 			import views.basicui.WindowStandaloneView;
 			[Bindable]
 			private var _datas:ArrayCollection = new ArrayCollection([
+				{label:"Tab Groups", url:TabGroupsView, hasChild:true},
 				{label:"Window Properties", url:WindowPropertiesView, hasChild:true},
 				{label:"Window Layout", url:WindowLayoutView, hasChild:true},
 				{label:"Window (Standalone)", url:WindowStandaloneView, hasChild:true},

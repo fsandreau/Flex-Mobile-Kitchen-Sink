@@ -1,7 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <common:RootNavigatorView xmlns:fx="http://ns.adobe.com/mxml/2009" 
-						  xmlns:s="library://ns.adobe.com/flex/spark" xmlns:common="views.common.*">
+						  xmlns:s="library://ns.adobe.com/flex/spark" xmlns:common="views.common.*" backgroundColor="Red">
+	<fx:Script>
+		<![CDATA[
+			import views.skins.MySkinClass;
+		]]>
+	</fx:Script>
 	<fx:Declarations>
 		<!-- Place non-visual elements (e.g., services, value objects) here -->
 	</fx:Declarations>
+	<common:layout>
+		<s:VerticalLayout horizontalAlign="center" />
+	</common:layout>
+	<s:Button label="Change BG Color" click="this.setStyle('backgroundColor', 'Cyan')" />
+	<s:Button click="this.setStyle('skinClass', MySkinClass)" label="Change BG Image" />
+	<s:Label text="Width : " />
+	<s:HSlider  minimum="10" maximum="100" liveDragging="true" id="sliderWidth" 
+		snapInterval="1" value="100" change="percentWidth = sliderWidth.value" />
+	<s:Label text="Opacity : " />
+	<s:HSlider  minimum="0" maximum="100" liveDragging="true" id="sliderOpacity" 
+				snapInterval="1" value="100" change="this.setStyle('backgroundColor', 'Red');alpha = sliderOpacity.value" />
 </common:RootNavigatorView>

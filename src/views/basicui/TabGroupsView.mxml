@@ -1,7 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
 <common:RootNavigatorView xmlns:fx="http://ns.adobe.com/mxml/2009" 
 						  xmlns:s="library://ns.adobe.com/flex/spark" xmlns:common="views.common.*">
+	
+	<fx:Script>
+		<![CDATA[
+			import mx.core.FlexGlobals;
+			
+			import spark.components.TabbedViewNavigatorApplication;
+			import spark.components.ViewNavigator;
+			import spark.transitions.CrossFadeViewTransition;
+			import spark.transitions.FlipViewTransition;
+			
+			import views.PlatformView;
+			
+			protected function btnTabIndex_clickHandler(event:MouseEvent):void
+			{
+				var main:TabbedViewNavigatorApplication = FlexGlobals.topLevelApplication as TabbedViewNavigatorApplication;
+				main.tabbedNavigator.selectedIndex = 3;
+			}
+			
+			protected function btnTabObject_clickHandler(event:MouseEvent):void
+			{
+				navigator.pushView(PlatformView, null, null, new FlipViewTransition()) ;
+			}
+			
+		]]>
+	</fx:Script>
+	
 	<fx:Declarations>
 		<!-- Place non-visual elements (e.g., services, value objects) here -->
 	</fx:Declarations>
+	<common:layout>
+		<s:VerticalLayout horizontalAlign="center" />
+	</common:layout>
+	<s:Button label="Set Active Tab (index = 3)" id="btnTabIndex" click="btnTabIndex_clickHandler(event)" />
+	<s:Button label="Navigate to tab Platform" id="btnTabObject" click="btnTabObject_clickHandler(event)" />
 </common:RootNavigatorView>

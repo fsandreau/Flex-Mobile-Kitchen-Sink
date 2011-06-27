@@ -1,7 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <common:RootNavigatorView xmlns:fx="http://ns.adobe.com/mxml/2009" 
 						  xmlns:s="library://ns.adobe.com/flex/spark" xmlns:common="views.common.*">
+	
 	<fx:Declarations>
 		<!-- Place non-visual elements (e.g., services, value objects) here -->
 	</fx:Declarations>
+	<common:titleContent>
+		<s:TextInput id="txtSearch" width="276" text="foo"/>
+	</common:titleContent>
+	<common:actionContent>
+		<s:Button id="btnRefresh" icon="@Embed('assets/images/button_cancel-48.png')" click="txtSearch.text=''" />	
+	</common:actionContent>
+	<common:layout>
+		<s:VerticalLayout verticalAlign="middle" horizontalAlign="center"/>
+	</common:layout>
+	<s:Button label="Focus Search Bar" click="txtSearch.setFocus()" />
+	<s:Button label="Blur Search Bar" click="txtSearch.focusManager.hideFocus()" />
+	<s:Button label="Change Value" click="txtSearch.text ='I have changed'" />
+	<s:Button label="Hide/Show" id="btnHS" click="actionBarVisible = !actionBarVisible" />
 </common:RootNavigatorView>

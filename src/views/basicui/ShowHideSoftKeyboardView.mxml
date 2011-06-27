@@ -1,27 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <common:RootNavigatorView xmlns:fx="http://ns.adobe.com/mxml/2009" 
-						  xmlns:s="library://ns.adobe.com/flex/spark" xmlns:common="views.common.*"
-						  softKeyboardDeactivate="rootnavigatorview1_softKeyboardDeactivateHandler(event)">
+	xmlns:s="library://ns.adobe.com/flex/spark" xmlns:common="views.common.*">
 	
 	<fx:Script>
 		<![CDATA[
 			private var isKeyboardActivated:Boolean = false;
 			
-			protected function btnShowHideKeyBoard_softKeyboardActivatingHandler(event:SoftKeyboardEvent):void
+			protected function btnShowHideKeyBoard_softKeyboardActivatingHandler(event:MouseEvent):void
 			{
 				if(!isKeyboardActivated) {
-					this.requestSoftKeyboard();
+					txtKeyboard.setFocus();
 				}
 				else {
-					event.preventDefault();					
+					txtKeyboard.focusManager.hideFocus();					
 				}
 				isKeyboardActivated = !isKeyboardActivated;
 			}			
-			
-			protected function rootnavigatorview1_softKeyboardDeactivateHandler(event:SoftKeyboardEvent):void
-			{
-				isKeyboardActivated = !isKeyboardActivated;
-			}
 			
 		]]>
 	</fx:Script>
@@ -29,8 +23,8 @@
 	<common:layout>
 		<s:VerticalLayout horizontalAlign="center" paddingTop="20" />
 	</common:layout>
-	<s:Label text="Keyboard or Click focus TextField to Show Keyboard" width="100%"/>
+	<s:Label text="Keyboard or Click focus TextField to Show Keyboard" width="100%" />
 	<s:TextInput id="txtKeyboard" />
 	<s:Button label="Request Show/Hide Keyboard" needsSoftKeyboard="true" id="btnShowHideKeyBoard" 
-		softKeyboardActivating="btnShowHideKeyBoard_softKeyboardActivatingHandler(event)" />
+		click="btnShowHideKeyBoard_softKeyboardActivatingHandler(event)" />
 </common:RootNavigatorView>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<common:RootNavigatorView xmlns:fx="http://ns.adobe.com/mxml/2009" 
+						  xmlns:s="library://ns.adobe.com/flex/spark" xmlns:common="views.common.*">
+	<fx:Script>
+		<![CDATA[
+			import spark.events.TextOperationEvent;
+			[Bindable]
+			private var value:String;
+			
+			protected function txtInput_changeHandler(event:TextOperationEvent):void
+			{
+				value = event.target.text;
+			}
+			
+		]]>
+	</fx:Script>
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+	<s:VGroup width="100%">
+		<s:TextInput id="txtInput" change="txtInput_changeHandler(event)"/>
+		<s:Label text="focus received, val = {value}" />
+		<s:Button click="txtInput.setFocus()" label="Focus" />
+		<s:Button click="txtInput.focusManager.hideFocus()" label="Blur" />
+		<s:Button click="txtInput.visible = !txtInput.visible" label="Hide / Show" />
+	</s:VGroup>
+</common:RootNavigatorView>
